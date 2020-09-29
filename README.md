@@ -14,7 +14,12 @@ The development currently consists of the following files:
 * [noetherian.v](noetherian.v): defines Noetherian rings. Two goal theorems are: (1) a ring is Noetherian iff every ideal is
   finitely generated, and (2) Hilbert's basis theorem (R[x] is Noetherian if R is Noetherian).
 
-All rings here are commutative and has 1, as is conventional in commutative algebra.
+All rings here are commutative and has 1, as is conventional in commutative algebra. We don't really have a canonical 
+reference here, but we often refer to:
+
+* David Eisenbud, _Commutative Algebra with a View Toward Algebraic Geometry_ (i.e., GTM 150);
+* M. F. Atiyah & I. G. MacDonald, _Introduction to Commutative Algebra_;
+* and the [Stacks Project](https://stacks.math.columbia.edu/).
 
 ## Usage
 Generate the Makefile:
