@@ -6,6 +6,7 @@
 classical.v
 basics.v
 ideal.v
+simple.v
 noetherian.v
 maximal.v
 

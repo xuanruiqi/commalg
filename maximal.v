@@ -20,15 +20,18 @@ End maximal.
 
 Section maximal_equiv.
   Import Quotient.
-  Import GRing.
+  Import GRing. Search eqType.
+  About gen_eqMixin.
   
-  Variables (R : comUnitRingType) (I : {pred R}) (idealI : idealr I).
+  Variables (R : comRingType) (I : {pred R}) (idealI : idealr I).
   Variable (kI : keyed_pred idealI).
   
-  Notation quotRI := (@rquot_ringQuotType R I idealI kI).
+  Notation quotRI := (ring_unitRingType (rquot_ringQuotType kI)).
 
-  (* Need to first prove that the quotient of a ring with 1 has 1 *)
-  (* Lemma maximal_quot_simple : maximal_idealr I -> Field.mixin_of quotRI. *)
+  Lemma maximal_quot_simple : maximal_idealr I -> Field.mixin_of quotRI.
+  Proof.
+    move=> maximalI x x_neq_0. rewrite /in_mem //=.
+  Admitted.
 End maximal_equiv.
 
 Section krull.

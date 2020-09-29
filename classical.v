@@ -11,4 +11,3 @@ Proof.
   move=> H. extensionality x. apply: H.
 Qed.
 
-
