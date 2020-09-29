@@ -1,0 +1,11 @@
+-arg -w -arg -notation-overridden
+-arg -w -arg -ambiguous-paths
+-arg -w -arg -notation-incompatible-format
+-arg -w -arg -projection-no-head-constant
+
+classical.v
+basics.v
+noetherian.v
+maximal.v
+
+-R . commalg
