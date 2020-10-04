@@ -1,0 +1,36 @@
+opam-version: "2.0"
+name: "coq-commalg"
+synopsis: "Commutative algebra in Coq" # One-line description
+description: """
+  Commutative formalized using SSReflect and packaed classes, based on 
+  the MathComp algbra library.
+""" # Longer description, can span several lines
+
+homepage: "https://github.com/xuanruiqi/commalg"
+dev-repo: "git+https://github.com/xuanruiqi/commalg.git"
+bug-reports: "https://github.com/xuanruiqi/commalg/issues"
+maintainer: "me@xuanruiqi.com"
+authors: [
+  "Xuanrui Qi"
+]
+license: "MIT" # Make sure this is reflected by a LICENSE file in your sources
+
+depends: [
+  "coq" {>= "8.11" & < "8.13~"}
+    "coq-mathcomp-ssreflect" {>= "1.11.0" & < "1.12~"}
+]
+
+build: [
+  ["coq_makefile" "-f" "_CoqProject" "-o" "Makefile"]
+  [make "-j%{jobs}%"]
+]
+install: [
+  [make "install"]
+]
+
+tags: [
+  "keyword:algebra"
+  "keyword:ssreflect"
+  "category:Math/Algebra"
+  "logpath:commalg"
+]
