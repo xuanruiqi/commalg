@@ -28,9 +28,14 @@ Section maximal_equiv.
   
   Notation quotRI := (ring_unitRingType (rquot_ringQuotType kI)).
 
-  Lemma maximal_quot_simple : maximal_idealr I -> Field.mixin_of quotRI.
+  Lemma maximal_quot_field : maximal_idealr I -> Field.mixin_of quotRI.
   Proof.
     move=> maximalI x x_neq_0. rewrite /in_mem //=.
+  Admitted.
+
+  Lemma quot_field_maximal : Field.mixin_of quotRI -> maximal_idealr I.
+  Proof.
+    rewrite /Field.mixin_of /in_mem //= => quot_fieldAx.
   Admitted.
 End maximal_equiv.
 

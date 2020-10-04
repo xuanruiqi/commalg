@@ -24,7 +24,7 @@ Section unit_ring.
 
   Definition is_inv (x y : R) := (x * y == 1) && (y * x == 1).
   Definition unitP (x : R) := exists y : R, is_inv x y.
-  Definition unit x : bool := `[< unitP x >].
+  Definition unitB x : bool := `[< unitP x >].
 
   Fact unitP_inv_right (x : R) : unitP x -> exists y, x * y == 1.
   Proof. move=> [y /andP [invr _]]. by exists y. Qed.
@@ -32,47 +32,44 @@ Section unit_ring.
   Fact unitP_inv_left (x : R) : unitP x -> exists y, y * x == 1.
   Proof. move=> [y /andP [_ invl]]. by exists y. Qed.
   
-  Definition inv x :=
+  Definition invS x :=
     match pselect (unitP x) with
     | left ex_inv => xchoose ex_inv
     | right _ => x
     end.
 
-  Fact invE x : unitP x -> (x * inv x == 1) && (inv x * x == 1).
+  Fact invE x : unitP x -> (x * invS x == 1) && (invS x * x == 1).
   Proof.
-    move=> is_unit. rewrite /inv.
+    move=> is_unit. rewrite /invS.
     case: (pselect (unitP x)) => H; last first. exact.
     apply: (xchooseP H).
   Qed.
   
-  Fact R_mulVr : {in unit, left_inverse 1 inv *%R}.
+  Fact R_mulVr : {in unitB, left_inverse 1 invS *%R}.
   Proof.
     move=> x. rewrite /in_mem //= => /asboolP is_unit.
     set H' := (invE is_unit). by move/andP: H' => [_ /eqP ->]. 
   Qed.
 
-  Fact R_divrr : {in unit, right_inverse 1 inv *%R}.
+  Fact R_divrr : {in unitB, right_inverse 1 invS *%R}.
   Proof.
     move=> x. rewrite /in_mem //= => /asboolP is_unit.
     set H' := (invE is_unit). by move/andP: H' => [/eqP -> _]. 
   Qed.
 
-  Fact R_mulVrr_unit (x y : R) : y * x = 1 /\ x * y = 1 -> unit x.
+  Fact R_mulVrr_unit (x y : R) : y * x = 1 /\ x * y = 1 -> unitB x.
   Proof.
     move=> [invl invr].
     apply/asboolP. exists y. apply/andP.
     split; by apply/eqP.
   Qed.
-  Check UnitRingMixin.
 
-  Fact R_inv_out : {in [predC unit], inv =1 id}.
+  Fact R_inv_out : {in [predC unitB], invS =1 id}.
   Proof.
     move=> x. Locate "[ predC _ ]".
     rewrite /predC //= /in_mem //=. move/asboolPn => not_unit.
-    rewrite /inv. by case: (pselect (unitP x)).
+    rewrite /invS. by case: (pselect (unitP x)).
   Qed.
-
-  Check UnitRingMixin.
 
   Definition ring_unitRingMixin := UnitRingMixin R_mulVr R_divrr R_mulVrr_unit R_inv_out.
   Canonical ring_unitRingType := Eval hnf in UnitRingType R ring_unitRingMixin.
