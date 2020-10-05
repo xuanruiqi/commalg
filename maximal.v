@@ -43,6 +43,6 @@ Section krull.
   Variables (R : unitRingType).
 
   (* Krull's theorem: every non-trivial ring has a maximal ideal *)
-  Theorem has_maximal_ideal : GRing.one R != 0 -> exists I : {pred R}, maximal_idealr I.
+  Theorem has_maximal_ideal : exists I : {pred R}, maximal_idealr I.
   Admitted.
 End krull.
