@@ -5,8 +5,10 @@
 
 classical.v
 basics.v
+unit.v
 ideal.v
 noetherian.v
 maximal.v
+local.v
 
 -R . commalg

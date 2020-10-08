@@ -5,3 +5,11 @@ Require Export FunctionalExtensionality ProofIrrelevanceFacts ProofIrrelevance.
 Set Implicit Arguments.
 Unset Strict Implicit.
 Unset Printing Implicit Defensive.
+
+Search asbool.
+Lemma asboolbK (b : bool) : `[< b >] = b.
+Proof.
+  case: b => //=.
+  by apply/asboolP.
+  by apply: asboolF.
+Qed.
