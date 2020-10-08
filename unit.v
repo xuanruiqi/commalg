@@ -55,8 +55,7 @@ Section unit_ring.
 
   Fact R_inv_out : {in [predC unitB], invS =1 id}.
   Proof.
-    move=> x. Locate "[ predC _ ]".
-    rewrite /predC //= /in_mem //=. move/asboolPn => not_unit.
+    move=> x. rewrite /predC //= /in_mem //=. move/asboolPn => not_unit.
     rewrite /invS. by case: (pselect (unitP x)).
   Qed.
 
