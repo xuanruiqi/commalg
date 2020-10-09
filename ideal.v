@@ -63,7 +63,4 @@ Proof.
   apply/negP => //=. rewrite in_setE //= /setI //= => Hc. move: Hc => [not_1_inc _] //=.
   move=> a x.
 Admitted.
-
-
-
 End intersection.

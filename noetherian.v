@@ -85,3 +85,4 @@ Proof.
 Qed.
 End noetherian_asc_chain.
 
+Export NoetherianRing.Exports.
