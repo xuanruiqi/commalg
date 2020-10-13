@@ -1,5 +1,5 @@
 From mathcomp Require Import all_ssreflect all_algebra.
-Require Import classical basics unit ideal maximal.
+Require Import classical unit ideal maximal.
 
 Open Scope ring_scope.
 Open Scope classical_set_scope.

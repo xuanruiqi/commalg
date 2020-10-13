@@ -1,5 +1,5 @@
 From mathcomp Require Import all_ssreflect all_algebra.
-Require Import classical basics unit ideal.
+Require Import classical unit ideal.
 
 Open Scope ring_scope.
 Open Scope classical_set_scope.

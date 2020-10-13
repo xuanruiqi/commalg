@@ -62,5 +62,5 @@ Section unit_ring.
   Definition ring_unitRingMixin := UnitRingMixin R_mulVr R_divrr R_mulVrr_unit R_inv_out.
   Canonical ring_unitRingType := Eval hnf in UnitRingType R ring_unitRingMixin.
 End unit_ring.
-
 Coercion ring_unitRingType : ringType >-> unitRingType.
+

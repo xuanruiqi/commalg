@@ -1,5 +1,5 @@
 From mathcomp Require Import all_ssreflect all_algebra.
-Require Import classical basics unit ideal.
+Require Import classical unit ideal.
 
 Open Scope ring_scope.
 Open Scope classical_set_scope.
@@ -9,7 +9,7 @@ Unset Strict Implicit.
 Unset Printing Implicit Defensive.
 
 (* This is a temporary fix; we probably need more infrastructure to work with this. *)
-Definition pred_of_set {T} (p : set T) := asbool \o p.
+(* Definition pred_of_set {T} (p : set T) := asbool \o p.*)
 
 Fact set_display : unit. Proof. by []. Qed.
 

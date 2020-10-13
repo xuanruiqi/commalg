@@ -1,5 +1,5 @@
 From mathcomp Require Import all_ssreflect all_algebra.
-Require Import classical basics.
+Require Import classical.
 
 Open Scope ring_scope.
 Open Scope classical_set_scope.
@@ -50,17 +50,57 @@ Local Definition pred_of_set {T} (p : set T) : {pred T} := asbool \o p.
 Local Coercion pred_of_set : set >-> pred_sort.
 
 Variables (R : ringType) (I J : {pred R}) 
-          (idealrI : idealr I) (idealrJ : idealr J)
-          (kI : keyed_pred idealrI) (kJ : keyed_pred idealrJ).
+          (idealrI : idealr I) (idealrJ : idealr J).
 
-Lemma idealr1' : 1 \in kI = false.
-Proof. by apply: negPf; case: idealrI kI => ? /= [? _] [] /= _ ->. Qed.
+Fact is_true_pred_of_set {T} (A : set T) (x : T) : is_true ((pred_of_set A) x) = A x.
+Proof. exact: asboolE. Qed.
 
-Lemma proper_idealI : proper_ideal (I `&` J).
+Fact in_expand {T} (A : {pred T}) (x : T) : x \in A = A x.
+Proof. exact. Qed.
+
+Lemma setI_proper_ideal : proper_ideal ((I `&` J) : {pred R}).
 Proof.
-  have not_1_in : ~ (1 \in I). apply: negP. by case: idealrI kI => ? //= [? _] [] //= _.
+  have not_1_in : ~ (1 \in I). apply: negP. by case: idealrI => [_ [? _]].
   split.
   apply/negP => //=. rewrite in_setE //= /setI //= => Hc. move: Hc => [not_1_inc _] //=.
-  move=> a x.
-Admitted.
+  move=> a x. rewrite /in_mem //= /in_set //= !is_true_pred_of_set. 
+  move=> []. rewrite -in_expand => xI. rewrite -in_expand => xJ.
+  split; rewrite -in_expand.
+  by move: idealrI => [_ [_ ->]].
+  by move: idealrJ => [_ [_ ->]].
+Qed.
+
+Fact setI_key : pred_key (I `&` J). Proof. by []. Qed.
+Canonical setI_keyed := KeyedPred setI_key.
+
+Fact setI_addr_closed : addr_closed setI_keyed.
+Proof.
+  split.
+  rewrite in_setE //= /setI //=.
+  move: idealrI => [[[_ [zeroI _]] _] _].
+  move: idealrJ => [[[_ [zeroJ _]] _] _].
+  split; exact.
+  move=> x y. rewrite /in_mem //= /in_set //= !is_true_pred_of_set.
+  move=> [xI xJ] [yI yJ]. split.
+  move: idealrI => [[[_ [_ clI]] _] _]. 
+  apply: (clI x y xI yI).
+  move: idealrJ => [[[_ [_ clJ]] _] _].
+  apply: (clJ x y xJ yJ).
+Qed.
+
+Fact setI_oppr_closed : oppr_closed setI_keyed.
+Proof.
+  move=> x. rewrite in_setE //= /setI //=. move=> [xI xJ].
+  rewrite /in_mem //= /in_set //= !is_true_pred_of_set; split.
+  move: idealrI => [[[_ [_ _]] clI] _].
+  apply: (clI x xI).
+  move: idealrJ => [[[_ [_ _]] clJ] _].
+  apply: (clJ x xJ).
+Qed.
+
+Canonical setI_addrPred := AddrPred setI_addr_closed.
+Canonical setI_zmodPred := ZmodPred setI_oppr_closed.
+
+Canonical setI_idealr := MkIdeal setI_zmodPred setI_proper_ideal.
 End intersection.
+

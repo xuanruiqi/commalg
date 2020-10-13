@@ -2,13 +2,15 @@
 -arg -w -arg -ambiguous-paths
 -arg -w -arg -notation-incompatible-format
 -arg -w -arg -projection-no-head-constant
+-arg -w -arg -redundant-canonical-projection
 
 classical.v
-basics.v
 unit.v
 ideal.v
 noetherian.v
 maximal.v
+nilpotent.v
 local.v
+localization.v
 
 -R . commalg
