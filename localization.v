@@ -20,6 +20,13 @@ Open Scope quotient_scope.
 Variables (R : comRingType) (S : {pred R}) (closedS : mul_closed S).
 
 Structure tS := MkType { elem : R ; _ : elem \in R }.
+
+Definition tS_eqMixin := @gen_eqMixin tS.
+Canonical tS_eqType := EqType tS tS_eqMixin.
+
+Definition tS_choiceMixin := @gen_choiceMixin tS.
+Canonical tS_choiceType := ChoiceType tS tS_choiceMixin.
+
 Coercion elem : tS >-> GRing.ComRing.sort.
 
 Definition loc_equiv (p p' : R * tS) := 
@@ -42,10 +49,34 @@ Qed.
 
 Lemma trans_loc_equiv : transitive loc_equiv.
 Proof.
-  move=> [r1 s1] [r2 s2] [r3 s3] /asboolP [t1 H1] /asboolP [t2 H2].
+  move=> [r2 s2] [r1 s1] [r3 s3] /asboolP [t1 H1] /asboolP [t2 H2].
   apply/asboolP.
-Admitted.
+  exists ((s2 : R) * t1 * t2).
+  rewrite mulrBr -[X in X - _]subr0.
+  rewrite -(subrr (t1 * t2 * (s1 : R) * (s3 : R) * r2)).
+  rewrite [in RHS]subrr opprD opprK addrA.
+  rewrite -addrA -[X in _ + (_ - X)]mulrA [X in _ + (_ - X * _)]mulrC.
+  rewrite -[X in _ + (_ - X)]mulrA -![X in _ + (X - _)]mulrA.
+  rewrite -mulrBr [X in _ * (_ - X)]mulrCA -mulrBr.
+  rewrite [X in _ * (_ - X)]mulrA [X in _ * (_ - X)]mulrC -mulrBr.
+  rewrite [X in _ + _ * X]mulrCA [(s3 : R) * r2]mulrC [(s2 : R) * r3]mulrC.
+  rewrite H2 !mulr0 addr0 -mulrA -mulrA mulrCA.
+  rewrite -![X in _ - X]mulrA -mulrBr mulrCA -mulrBr [X in _ - X]mulrCA.
+  rewrite [r1 * (s3 : R)]mulrC [X in X - _]mulrCA -mulrBr.
+  rewrite mulrCA [X in _ * X]mulrCA [(s2 : R) * r1]mulrC [(s1 : R) * r2]mulrC.
+  by rewrite H1 !mulr0.
+Qed.
 
-Definition eqrel_loc_equiv := EquivRel loc_equiv ref_loc_equiv sym_loc_equiv trans_loc_equiv.
-Canonical eqrel_loc_equiv.
+Lemma loc_equiv_is_equiv : equiv_class_of loc_equiv.
+Proof.
+  split.
+  apply: ref_loc_equiv.
+  apply: sym_loc_equiv.
+  apply: trans_loc_equiv.
+Qed.
+
+Canonical loc_equiv_equiv := EquivRelPack loc_equiv_is_equiv.
+Canonical loc_equiv_encModRel := @defaultEncModRel (prod_choiceType R tS_choiceType) loc_equiv.
+
+Definition localize := {eq_quot loc_equiv}.
 End localization.
