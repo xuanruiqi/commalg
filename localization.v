@@ -19,7 +19,7 @@ Open Scope quotient_scope.
 
 Variables (R : comRingType) (S : {pred R}) (closedS : mul_closed S).
 
-Structure tS := MkType { elem : R ; _ : elem \in R }.
+Structure tS := MkType { elem : R ; _ : elem \in S }.
 
 Definition tS_eqMixin := @gen_eqMixin tS.
 Canonical tS_eqType := EqType tS tS_eqMixin.
