@@ -46,9 +46,6 @@ End trivial_ideal.
 Notation ideal0 := (pred1 0).
 
 Section intersection.
-Local Definition pred_of_set {T} (p : set T) : {pred T} := asbool \o p.
-Local Coercion pred_of_set : set >-> pred_sort.
-
 Variables (R : ringType) (I J : {pred R}) 
           (idealrI : idealr I) (idealrJ : idealr J).
 
@@ -104,3 +101,66 @@ Canonical setI_zmodPred := ZmodPred setI_oppr_closed.
 Canonical setI_idealr := MkIdeal setI_zmodPred setI_proper_ideal.
 End intersection.
 
+(* The radical of an ideal is an ideal *)
+Section radical.
+Variables (R : comRingType) (I : {pred R}) (idealI : idealr I).
+
+Definition radical x := `[< exists n : nat, x ^+ n \in I >].
+
+Lemma radical_proper_ideal : proper_ideal radical.
+Proof.
+  split.
+  move: idealI => [_ [one_notinI _]].
+  rewrite /in_mem //=. apply/negP => //=.
+  rewrite in_setE -forallNE => n.
+  rewrite expr1n /in_mem //=. 
+  move: one_notinI. by rewrite /in_mem //= => /negP.
+  move=> a x. rewrite /in_mem //= => /asboolP [n x_pow_n].
+  apply/asboolP. exists n. rewrite exprMn_comm. 
+  move: idealI => [_ [_ closedI]].
+  apply: (closedI (a ^+ n) (x ^+ n) x_pow_n).
+  apply: mulrC.
+Qed.
+
+Fact radical_key : pred_key radical. Proof. by []. Qed.
+Canonical radical_keyed := KeyedPred radical_key.
+
+Lemma mulrn_closed x n : x \in I -> x *+ n \in I.
+Proof.
+  move=> xI. elim: n => [| n IH] //=.
+  rewrite mulr0n. by move: idealI => [[[_ [-> _]] _] _].
+  rewrite mulrSr.
+  move: idealI => [[[_ [_ Hin]] _] _].
+  by apply: Hin.
+Qed.
+
+Lemma radical_addr_closed : addr_closed radical.
+Proof.
+  have mul_closed: forall a x, x \in I -> a * x \in I.
+  move: idealI => [_ [_ H]]. apply: H.
+  split.
+  apply/asboolP. exists 1%N. rewrite expr0n //=.
+  by move: idealI => [[[_ [-> _]] _] _].
+  move=> x y. rewrite /in_mem //= => /asboolP [n x_pow_n].
+  move=> /asboolP [m y_pow_m]. apply/asboolP.
+  exists (m + n)%N. rewrite exprDn.
+  have tm_in_I: forall i, (i < (m + n).+1)%N -> x ^+ (m + n - i)%N * y ^+ i *+ 'C(m + n, i) \in I.
+  move=> i i_bound.
+  case_eq (i < m)%N => //= i_cond.
+  have x_pow_in_I: x ^+ (m + n - i) \in I.
+  rewrite addnC -addnBA. rewrite exprD mulrC.
+  by apply: mul_closed. by rewrite leq_eqVlt i_cond orbT.
+  rewrite mulrC. apply: mulrn_closed. by apply: mul_closed.
+  have y_pow_in_I : y ^+ i \in I.
+  rewrite -(@subnKC m i). rewrite exprD mulrC. by apply: mul_closed.
+  by rewrite leqNgt i_cond. apply: mulrn_closed. by apply: mul_closed.
+Admitted.
+
+Lemma radical_oppr_closed : oppr_closed radical.
+Proof.
+  move=> x. rewrite /in_mem //= => /asboolP [n xpow_I].
+  apply/asboolP. exists n. rewrite exprNn.
+  by move: idealI => [_ [_ ->]].
+Qed.
+
+End radical.

@@ -19,7 +19,7 @@ Open Scope quotient_scope.
 
 Variables (R : comRingType) (S : {pred R}) (closedS : mul_closed S).
 
-Structure tS := MkType { elem : R ; _ : elem \in S }.
+Structure tS := MkMulType { elem : R ; _ : elem \in S }.
 
 Definition tS_eqMixin := @gen_eqMixin tS.
 Canonical tS_eqType := EqType tS tS_eqMixin.
@@ -79,4 +79,20 @@ Canonical loc_equiv_equiv := EquivRelPack loc_equiv_is_equiv.
 Canonical loc_equiv_encModRel := @defaultEncModRel (prod_choiceType R tS_choiceType) loc_equiv.
 
 Definition localize := {eq_quot loc_equiv}.
+
+(* + and * defined on the localized set *)
+Definition loc_add (l1 l2 : (R * tS)) : (R * tS) :=
+  match l1, l2 with
+  | (r1, MkMulType s1 H1), (r2, MkMulType s2 H2) =>
+    (r1 * s2 + s2 * r1, @MkMulType (s1 * s2) (closedS H1 H2))
+  end.
+
+Definition loc_mul (l1 l2 : (R * tS)) : (R * tS) :=
+  match l1, l2 with
+  | (r1, MkMulType s1 H1), (r2, MkMulType s2 H2) =>
+    (r1 * r2, @MkMulType (s1 * s2) (closedS H1 H2))
+  end.
+
+Definition add_localized := lift_op2 localize loc_add.
+Definition mul_localized := lift_op2 localize loc_mul.  
 End localization.
