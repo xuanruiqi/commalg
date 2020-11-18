@@ -16,14 +16,17 @@ Variable (R : comUnitRingType).
 Definition nilpotentP (x : R) := exists n, x ^+ n == 0.
 Definition nilpotent (x : R) := `[< nilpotentP x >].
 
+Fact introNN (P : Prop) : P -> ~ ~ P.
+Proof. by move=> ?. Qed.
+
 (* Next: the set of nilpotents (i.e., nilradical) of R forms an ideal *)
 Lemma nilpotent_proper_ideal : proper_ideal nilpotent.
 Proof.
   split => //=. rewrite /in_mem //=. apply/asboolPn.
   rewrite -forallNE => n. apply/negP. by rewrite expr1n oner_neq0.
   move=> x y. rewrite /in_mem //= => /asboolPn /contrapT [n Hn]. 
-  apply/asboolPn. rewrite eqNN. exists n.
-  rewrite exprMn_comm.
+  apply/asboolPn. apply: introNN.
+  exists n. rewrite exprMn_comm.
   move: Hn => /eqP ->. by rewrite mulr0.
   by rewrite /comm mulrC.
 Qed.
@@ -60,11 +63,11 @@ Qed.
 Lemma nilpotent_addr_closed : addr_closed nilpotent_keyed.
 Proof.
   split.
-  rewrite /in_mem //=. apply/asboolPn. rewrite eqNN.
+  rewrite /in_mem //=. apply/asboolPn. apply: introNN.
   exists 1%N. by rewrite expr0n.
   move=> x y. 
   rewrite /in_mem //= => /asboolPn /contrapT [n /eqP nilp_n] /asboolPn /contrapT [m /eqP nilp_m].
-  apply/asboolPn. rewrite eqNN.
+  apply/asboolPn. apply: introNN.
   (* Proof by binomial theorem: at least one binomial exponent is large enough *)
   (* We take the exponent to be m + n but this is certainly not minimal *)
   exists (m + n)%N.
@@ -79,7 +82,7 @@ Qed.
 Fact nilpotent_oppr_closed : oppr_closed nilpotent_keyed.
 Proof.
   move=> x. rewrite /in_mem //= => /asboolPn /contrapT [n /eqP Hn].
-  apply/asboolPn. rewrite eqNN. exists n.
+  apply/asboolPn. apply: introNN. exists n.
   by rewrite exprNn Hn mulr0.
 Qed.
 

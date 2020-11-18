@@ -79,7 +79,7 @@ Proof. exact: subset_trans. Qed.
 Lemma ideal_incl_antisym (I J : ideal) : I `<=` J -> J `<=` I -> I = J.
 Proof.
   move: I J => [setI idI] [setJ idJ] //= setIJ setJI.
-  have setEq := eqEsubset setIJ setJI.
+  have seqEq : setI = setJ by rewrite eqEsubset.
   subst; congr MkIdeal. apply: Prop_irrelevance.
 Qed.
 
@@ -102,7 +102,6 @@ Proof.
   move => setI ideal_I.
   have ideal_sI : idealr (pred_of_set setI) by rewrite pred_of_setE.
   have := (maximal_M (MkIdeal ideal_sI)).
-  move/contrap.
   (* forall I, idealr I -> not (S `<=` I). <-> forall I, I `<=` S -> I = S *)
 Admitted.
 End krull.
