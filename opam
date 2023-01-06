@@ -20,7 +20,6 @@ depends: [
   "coq-mathcomp-ssreflect" {>= "1.11.0" & < "1.16~"}
   "coq-mathcomp-algebra" {>= "1.11.0" & < "1.16~"}
   "coq-mathcomp-classical" {>= "0.6.0"}
-  "coq-mathcomp-analysis" {>= "0.6.0"}
 ]
 
 build: [
