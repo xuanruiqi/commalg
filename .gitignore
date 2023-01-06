@@ -31,6 +31,8 @@ lia.cache
 nia.cache
 nlia.cache
 nra.cache
+Makefile.coq
+Makefile.coq.conf
 
 # generated timing files
 *.timing.diff
