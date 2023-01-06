@@ -1,16 +1,16 @@
 # Commutative algebra in Coq/SSReflect
 
-Commutative algebra formalized in Coq using SSReflect/MathComp & packed classes. This repository is 
-part of the [Coq/SSReflect algebraic geometry project](https://www.xuanruiqi.com/algebraic-geometry/). 
+Commutative algebra formalized in Coq using SSReflect/MathComp & packed classes. This repository is
+part of the [Coq/SSReflect algebraic geometry project](https://www.xuanruiqi.com/algebraic-geometry/).
 
 The development currently consists of the following files:
 
-* [classical.v](classical.v): exports libraries required for classical reasoning, and some additional lemmas. Currently, 
-  we assume functional extensionality, `Prop` extensionality, decidable equality for every type, and the (type-theoretic) 
+* [classical.v](classical.v): exports libraries required for classical reasoning, and some additional lemmas. Currently,
+  we assume functional extensionality, `Prop` extensionality, decidable equality for every type, and the (type-theoretic)
   Axiom of Choice. The Axiom of Choice, in particular, is required to prove statements such as Krull's theorem;
 * [unit.v](unit.v): unitRing structure for every ring (from classical reasoning);
 * [ideal.v](ideal.v): some facts about ideals (e.g., intersection of ideals is an ideal);
-* [maximal.v](maximal.v): defines maximal ideals and lemmas about them. Currently, we are working on proving Krull's 
+* [maximal.v](maximal.v): defines maximal ideals and lemmas about them. Currently, we are working on proving Krull's
   theorem (every nonzero ring has a maximal ideal);
 * [noetherian.v](noetherian.v): defines Noetherian rings. Two goal theorems are: (1) a ring is Noetherian iff every ideal is
   finitely generated, and (2) Hilbert's basis theorem (R[x] is Noetherian if R is Noetherian);
@@ -18,7 +18,7 @@ The development currently consists of the following files:
 * [localization.v](localization.v): the localization of a ring, one of the most important constructions in algebraic geometry;
 * [nilpotent.v](nilpotent.v): facts about nilpotents and the nilradical of a ring.
 
-All rings here are commutative and has 1, as is conventional in commutative algebra. We don't really have a canonical 
+All rings here are commutative and have 1, as is conventional in commutative algebra. We don't really have a canonical
 reference here, but we often refer to:
 
 * David Eisenbud, _Commutative Algebra with a View Toward Algebraic Geometry_ (i.e., GTM 150);
@@ -26,9 +26,12 @@ reference here, but we often refer to:
 * and the [Stacks Project](https://stacks.math.columbia.edu/).
 
 ## Usage
-Generate the Makefile:
+Install necessary dependencies:
 
-    coq_makefile -f _CoqProject -o Makefile
+```shell
+opam repo add coq-released https://coq.inria.fr/opam/released
+opam install coq-mathcomp-ssreflect coq-mathcomp-algebra coq-mathcomp-classical
+```
 
 and then run `make`.
 

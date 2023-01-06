@@ -1,5 +1,5 @@
 From mathcomp Require Import all_ssreflect.
-From mathcomp.analysis Require Export classical_sets boolp.
+From mathcomp.classical Require Export classical_sets boolp.
 Require Export FunctionalExtensionality ProofIrrelevanceFacts ProofIrrelevance.
 
 Set Implicit Arguments.
